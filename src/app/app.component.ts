@@ -7,10 +7,12 @@ import { FilmsService } from './services/films.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
   title = 'peliculas-app';
+
   constructor(private filmsService: FilmsService) {
-    this.filmsService.test().subscribe(
-      resp => console.log(resp)
-    );
+    // this.filmsService.test().subscribe(
+    //   resp => console.log(resp)
+    // );
   }
 }

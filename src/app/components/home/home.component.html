@@ -1,1 +1,30 @@
-<p>home works!</p>
+
+<div class="container mt-5">
+    <h1 class="mb-5">Películas populares en España</h1>
+    <div class="card-columns">
+        <div *ngFor="let infantil of infantiles" class="card">
+            <img src="{{routeAndWeight + infantil.image}}" class="card-img-top" alt="{{infantil.title}}">
+            <div class="card-body">
+                <h5 class="card-title">{{infantil.title}}</h5>
+                <p class="card-text">{{infantil.overview}}</p>
+                <p class="card-text">{{infantil.releaseDate}}</p>
+                <p class="card-text"><span *ngFor="let genre of infantil.genres" class="badge badge-secondary m-1">{{genre}}</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <h1 class="mb-5">Películas populares en el mundo</h1>
+    <div class="card-columns">
+        <div *ngFor="let popular of populares" class="card">
+            <img src="{{routeAndWeight + popular.image}}" class="card-img-top" alt="{{popular.title}}">
+            <div class="card-body">
+                <h5 class="card-title">{{popular.title}}</h5>
+                <p class="card-text">{{popular.overview}}</p>
+                <p class="card-text">{{popular.releaseDate}}</p>
+                <p class="card-text"><span *ngFor="let genre of popular.genres" class="badge badge-secondary m-1">{{genre}}</span></p>
+            </div>
+        </div>
+    </div>
+</div>
