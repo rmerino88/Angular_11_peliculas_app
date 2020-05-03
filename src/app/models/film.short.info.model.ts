@@ -1,11 +1,13 @@
 export class FilmShortInfoModel {
+    id: string;
     title: string;
     image: string;
     releaseDate: string;
     genres: string[];
     overview: string;
 
-    constructor(title: string, releaseDate: string, genres: string[], overview: string, image?: string) {
+    constructor(id: string, title: string, releaseDate: string, genres: string[], overview: string, image?: string) {
+        this.id = id;
         this.title = title;
         this.releaseDate = releaseDate;
         this.genres = genres;

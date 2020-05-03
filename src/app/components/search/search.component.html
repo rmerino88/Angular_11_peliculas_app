@@ -1,1 +1,26 @@
-<p>search works!</p>
+<div class="container mt-5">
+    
+    <div class="row mb-5">
+        <div class="col-8">
+            <input class="form-control" type="search" placeholder="Buscar" (keyup)="getFivesugerences()" aria-label="Buscar" [(ngModel)]="term">
+            <ul *ngFor="let sugerencia of sugerencias" class="list-group">
+                <li class="list-group-item disabled" aria-disabled="true" (click)="buscar(sugerencia)">{{sugerencia}}</li>
+            </ul>
+        </div>
+        <div class="col-4">
+            <button class="btn btn-outline-success" type="button" (click)="buscar()">Buscar</button>
+        </div>
+    </div>
+
+
+    <div *ngFor="let result of results" class="card mb-5">
+        <div class="card-header">
+            {{result.title}}
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{{result.title}}</h5>
+            <p class="card-text">{{result.overview}}</p>
+            <a [routerLink]="[ '/detail', result.id ]" class="btn btn-primary">Ver detalle</a>
+        </div>
+    </div>
+</div>

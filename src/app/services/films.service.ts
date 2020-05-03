@@ -20,23 +20,26 @@ export class FilmsService {
     this.getGenres();
   }
 
-  getGenres() {
-
-    const url = `${ this.urlMovieDb }/genre/movie/list?api_key=${ this.apikey }${ this.languageEs }`;
-
-    return this.httpClient.jsonp(url, 'callback' ).subscribe(
-      (resp: any) => {
-        this.initializeGenres(resp.genres);
-     }
-   );
+  getDetailFilm(filmID?: number) {
+    const url = `${this.urlMovieDb}/movie/${filmID}?api_key=${this.apikey}${this.languageEs}`;
+    return this.httpClient.jsonp(url, 'callback');
   }
 
-  getPopulares() {
+  getPopulares(pageNumber?: number, region?: string) {
 
-    const url = `${ this.urlMovieDb }/discover/movie?sort_by=popularity.desc&api_key=${ this.apikey }${ this.languageEs }`;
+    let pageNumberQuery = '';
+    let regionQuery = '';
+    if (pageNumber) {
+      pageNumberQuery = `&page=${pageNumber}`;
+    }
+    if (regionQuery) {
+      regionQuery = `&region=${region}`;
+    }
 
-    return this.httpClient.jsonp(url, 'callback' ).pipe(
-      map( (resp: any) => {
+    const url = `${this.urlMovieDb}/discover/movie?sort_by=popularity.desc${pageNumberQuery}${regionQuery}${this.languageEs}&api_key=${this.apikey}`;
+
+    return this.httpClient.jsonp(url, 'callback').pipe(
+      map((resp: any) => {
         if (!resp.results) {
           return;
         }
@@ -45,33 +48,67 @@ export class FilmsService {
     );
   }
 
-  getPopularesInfantiles() {
+  getCartelera() {
 
-    const url = `${ this.urlMovieDb }/discover/movie?region=ES&api_key=${ this.apikey }${ this.languageEs }`;
+    const desdeStr = this.formatDate();
+    const hastaStr = this.formatDate();
 
-    return this.httpClient.jsonp(url, 'callback' ).pipe(
-              map( (resp: any) => {
-                if (!resp.results) {
-                  return;
-                }
-                return this.generateList(resp.results);
-              })
-            );
+    const url = `${this.urlMovieDb}/discover/movie?primary_release_date.gte=${desdeStr}&primary_release_date.lte=${hastaStr}${this.languageEs}&api_key=${this.apikey}`;
+    console.log(url);
+    return this.httpClient.jsonp(url, 'callback').pipe(
+      map((resp: any) => {
+        if (!resp.results) {
+          return;
+        }
+        return this.generateList(resp.results);
+      })
+    );
   }
 
-  buscarPelicula( texto: string ) {
+  formatDate(): string {
+    const d = new Date();
+    let month = '' + (d.getMonth() + 1);
+    let day = '' + d.getDate();
+    const year = d.getFullYear();
 
-    const url = `${ this.urlMovieDb }/search/movie?query=${ texto }&sort_by=popularity.desc&api_key=${ this.apikey }${ this.languageEs }`;
-
-    return this.httpClient.jsonp(url, 'callback' ).pipe(
-              map( resp => resp)
-            );
+    if (month.length < 2){
+      month = '0' + month;
+    }
+    if (day.length < 2){
+      day = '0' + day;
+    }
+    return [year, month, day].join('-');
   }
 
-  test() {
-    // return this.httpClient.get(`https://api.themoviedb.org/3/movie/550?api_key=${ this.apikey }${ this.languageEs }`);
-    return this.httpClient.jsonp('https://api.themoviedb.org/3/movie/550?api_key=4657431159112caae0426c3da4079c54', 'callback').pipe(
-      map( resp => resp )
+  getPopularesEsp(pageNumber: number) {
+    return this.getPopulares(pageNumber, 'ES');
+  }
+
+  buscarPelicula(term: string) {
+    const url = `${this.urlMovieDb}/search/movie?query=${term}&sort_by=popularity.desc&api_key=${this.apikey}${this.languageEs}`;
+    return this.httpClient.jsonp(url, 'callback').pipe(
+      map((resp: any) => {
+        if (!resp.results) {
+          return;
+        }
+        return this.generateList(resp.results);
+      })
+    );
+  }
+
+  getFiveSugerences(term: string) {
+    const url = `${this.urlMovieDb}/search/movie?query=${term}&api_key=${this.apikey}${this.languageEs}`;
+    console.log(url);
+    return this.httpClient.jsonp(url, 'callback').pipe(
+      map((resp: any) => {
+        const sugerences: string[] = [];
+        resp.results.forEach(element => {
+          if (!sugerences.includes(element.title)) {
+            sugerences.push(element.title);
+          }
+        });
+        return sugerences;
+      })
     );
   }
 
@@ -83,15 +120,24 @@ export class FilmsService {
         if (elem.genre_ids) {
           genres = this.populateGenres(elem.genre_ids);
         }
-        films.push(new FilmShortInfoModel(elem.title, elem.release_date, genres, elem.overview, elem.poster_path));
+        films.push(new FilmShortInfoModel(elem.id, elem.title, elem.release_date, genres, elem.overview, elem.poster_path));
       }
     );
     return films;
   }
 
+  private getGenres() {
+    const url = `${this.urlMovieDb}/genre/movie/list?api_key=${this.apikey}${this.languageEs}`;
+    return this.httpClient.jsonp(url, 'callback').subscribe(
+      (resp: any) => {
+        this.initializeGenres(resp.genres);
+      }
+    );
+  }
+
   private populateGenres(genreIds: string[]) {
     const filmGenres: string[] = [];
-    genreIds.forEach( key => {
+    genreIds.forEach(key => {
       filmGenres.push(this.genres.get(key));
     });
     return filmGenres;
@@ -100,6 +146,13 @@ export class FilmsService {
   private initializeGenres(genres: any[]) {
     genres.forEach(
       elem => this.genres.set(elem.id, elem.name)
+    );
+  }
+
+  test() {
+    // return this.httpClient.get(`https://api.themoviedb.org/3/movie/550?api_key=${ this.apikey }${ this.languageEs }`);
+    return this.httpClient.jsonp('https://api.themoviedb.org/3/movie/550?api_key=4657431159112caae0426c3da4079c54', 'callback').pipe(
+      map(resp => resp)
     );
   }
 

@@ -15,9 +15,9 @@
             <a class="nav-link" [routerLink]="[ '/search' ]" routerLinkActive="active">Buscar</a>
           </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Buscar">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+        <form class="form-inline my-2 my-lg-0" >
+          <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Buscar" [(ngModel)]="term" name="term">
+          <button class="btn btn-outline-success my-2 my-sm-0" [routerLink]="[ '/search' ]" type="button" (click)="buscar()">Buscar</button>
         </form>
       </div>
 </nav>

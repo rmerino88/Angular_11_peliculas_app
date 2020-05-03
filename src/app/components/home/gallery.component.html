@@ -1,0 +1,41 @@
+<div class="container">
+    <br>
+    <h1>{{title}}</h1>
+    <hr>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-md-12 div-pic-1" (click)="goToDetail(0)"
+                    [ngStyle]="{ 'background-image': films[0] | filmImage:'backgorund'  }">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 div-pic-2"  (click)="goToDetail(1)"
+                    [ngStyle]="{ 'background-image': films[1] | filmImage:'backgorund'  }">
+                    >
+                </div>
+                <div class="col-sm-6 div-pic-2" (click)="goToDetail(2)"
+                    [ngStyle]="{ 'background-image': films[2] | filmImage:'backgorund'  }">
+                    >
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-sm-6 div-pic-2" (click)="goToDetail(3)"
+                    [ngStyle]="{ 'background-image': films[3] | filmImage:'backgorund'  }">
+                    >
+                </div>
+                <div class="col-sm-6 div-pic-2" (click)="goToDetail(4)"
+                    [ngStyle]="{ 'background-image': films[4] | filmImage:'backgorund'  }">
+                    >
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 div-pic-1" (click)="goToDetail(5)"
+                    [ngStyle]="{ 'background-image': films[5] | filmImage:'backgorund'  }">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

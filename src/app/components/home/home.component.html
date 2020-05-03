@@ -1,30 +1,66 @@
-
-<div class="container mt-5">
-    <h1 class="mb-5">Películas populares en España</h1>
-    <div class="card-columns">
-        <div *ngFor="let infantil of infantiles" class="card">
-            <img src="{{routeAndWeight + infantil.image}}" class="card-img-top" alt="{{infantil.title}}">
-            <div class="card-body">
-                <h5 class="card-title">{{infantil.title}}</h5>
-                <p class="card-text">{{infantil.overview}}</p>
-                <p class="card-text">{{infantil.releaseDate}}</p>
-                <p class="card-text"><span *ngFor="let genre of infantil.genres" class="badge badge-secondary m-1">{{genre}}</span></p>
-            </div>
-        </div>
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">Películas APP</h1>
+        <p class="lead">Se trata de una aplicación que hace uso de servicios REST de la api "The movie database".
+            En esta primera pantalla mostraremos las películas en cartelera, películas populares y películas porpulares
+            en España</p>
     </div>
 </div>
 
+<app-gallery *ngIf="!loading" [title]="'Cartelera'" [films]="cartelera.slice(0,6)"></app-gallery>
+<app-gallery *ngIf="!loading" [title]="'Películas populares en el mundo'" [films]="populares.slice(0,6)"></app-gallery>
+
 <div class="container mt-5">
+
     <h1 class="mb-5">Películas populares en el mundo</h1>
+    <!-- Quedaría controlar la paginación del final -->
+    <nav aria-label="Películas populares en España Page navigation 2 " class="mt-1">
+        <ul class="pagination">
+            <li [class.disabled]="popularesCurrent===1" class="page-item">
+                <a class="page-link" (click)="loadPagePopulares(popularesCurrent-1)" tabindex="-1"
+                    aria-disabled="true">Anterior</a>
+            </li>
+            <li *ngFor="let index of [0,1,2,3,4]" [class.active]="popularesCurrent === popularesStart + index"
+                class="page-item">
+                <a class="page-link" (click)="loadPagePopulares(popularesStart+index)">{{popularesStart + index}}</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" (click)="loadPagePopulares(popularesCurrent+1)" tabindex="-1"
+                    aria-disabled="true">Siguiente</a>
+            </li>
+        </ul>
+    </nav>
+
     <div class="card-columns">
-        <div *ngFor="let popular of populares" class="card">
+        <div *ngFor="let popular of populares" class="card" [routerLink]="[ '/detail', popular.id ]">
             <img src="{{routeAndWeight + popular.image}}" class="card-img-top" alt="{{popular.title}}">
             <div class="card-body">
                 <h5 class="card-title">{{popular.title}}</h5>
                 <p class="card-text">{{popular.overview}}</p>
                 <p class="card-text">{{popular.releaseDate}}</p>
-                <p class="card-text"><span *ngFor="let genre of popular.genres" class="badge badge-secondary m-1">{{genre}}</span></p>
+                <p class="card-text"><span *ngFor="let genre of popular.genres"
+                        class="badge badge-secondary m-1">{{genre}}</span></p>
             </div>
         </div>
     </div>
+
+</div>
+
+<div class="container mt-5">
+
+    <h1 class="mb-5">Películas populares en España</h1>
+    <div *ngFor="let rowPopularesEsp of groupPopularesEsp" class="card-deck mb-5">
+        <div *ngFor="let popularEsp of rowPopularesEsp" class="card" [routerLink]="[ '/detail', popularEsp.id ]">
+            <img src="{{routeAndWeight + popularEsp.image}}" class="card-img-top" alt="{{popularEsp.title}}">
+            <div class="card-body">
+                <h5 class="card-title">{{popularEsp.title}}</h5>
+                <p class="card-text">{{popularEsp.overview}}</p>
+                <p class="card-text">{{popularEsp.releaseDate}}</p>
+                <p class="card-text"><span *ngFor="let genre of popularEsp.genres"
+                        class="badge badge-secondary m-1">{{genre}}</span></p>
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn btn-dark mb-5" (click)="loadMorePopularesEsp()">Más películas</button>
+
 </div>

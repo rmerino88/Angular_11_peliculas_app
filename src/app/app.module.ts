@@ -9,6 +9,9 @@ import { HomeComponent } from './components/home/home.component';
 import { SearchComponent } from './components/search/search.component';
 import { DetailComponent } from './components/detail/detail.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { FormsModule } from '@angular/forms';
+import { FilmImagePipe } from './pipes/film-image.pipe';
+import { GalleryComponent } from './components/home/gallery.component';
 
 @NgModule({
   declarations: [
@@ -17,13 +20,16 @@ import { FooterComponent } from './components/footer/footer.component';
     HomeComponent,
     SearchComponent,
     DetailComponent,
-    FooterComponent
+    FooterComponent,
+    FilmImagePipe,
+    GalleryComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    HttpClientJsonpModule
+    HttpClientJsonpModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
