@@ -22,7 +22,7 @@ export class FilmsService {
 
   getDetailFilm(filmID?: number) {
     const url = `${this.urlMovieDb}/movie/${filmID}?api_key=${this.apikey}${this.languageEs}`;
-    return this.httpClient.jsonp(url, 'callback');
+    return this.httpClient.get(url);
   }
 
   getPopulares(pageNumber?: number, region?: string) {
@@ -38,7 +38,7 @@ export class FilmsService {
 
     const url = `${this.urlMovieDb}/discover/movie?sort_by=popularity.desc${pageNumberQuery}${regionQuery}${this.languageEs}&api_key=${this.apikey}`;
 
-    return this.httpClient.jsonp(url, 'callback').pipe(
+    return this.httpClient.get(url).pipe(
       map((resp: any) => {
         if (!resp.results) {
           return;
@@ -46,6 +46,10 @@ export class FilmsService {
         return this.generateList(resp.results);
       })
     );
+  }
+
+  getPopularesEsp(pageNumber: number) {
+    return this.getPopulares(pageNumber, 'ES');
   }
 
   getCartelera() {
@@ -55,7 +59,7 @@ export class FilmsService {
 
     const url = `${this.urlMovieDb}/discover/movie?primary_release_date.gte=${desdeStr}&primary_release_date.lte=${hastaStr}${this.languageEs}&api_key=${this.apikey}`;
     console.log(url);
-    return this.httpClient.jsonp(url, 'callback').pipe(
+    return this.httpClient.get(url).pipe(
       map((resp: any) => {
         if (!resp.results) {
           return;
@@ -65,28 +69,9 @@ export class FilmsService {
     );
   }
 
-  formatDate(): string {
-    const d = new Date();
-    let month = '' + (d.getMonth() + 1);
-    let day = '' + d.getDate();
-    const year = d.getFullYear();
-
-    if (month.length < 2){
-      month = '0' + month;
-    }
-    if (day.length < 2){
-      day = '0' + day;
-    }
-    return [year, month, day].join('-');
-  }
-
-  getPopularesEsp(pageNumber: number) {
-    return this.getPopulares(pageNumber, 'ES');
-  }
-
   buscarPelicula(term: string) {
     const url = `${this.urlMovieDb}/search/movie?query=${term}&sort_by=popularity.desc&api_key=${this.apikey}${this.languageEs}`;
-    return this.httpClient.jsonp(url, 'callback').pipe(
+    return this.httpClient.get(url).pipe(
       map((resp: any) => {
         if (!resp.results) {
           return;
@@ -99,7 +84,7 @@ export class FilmsService {
   getFiveSugerences(term: string) {
     const url = `${this.urlMovieDb}/search/movie?query=${term}&api_key=${this.apikey}${this.languageEs}`;
     console.log(url);
-    return this.httpClient.jsonp(url, 'callback').pipe(
+    return this.httpClient.get(url).pipe(
       map((resp: any) => {
         const sugerences: string[] = [];
         resp.results.forEach(element => {
@@ -110,6 +95,21 @@ export class FilmsService {
         return sugerences;
       })
     );
+  }
+
+  private formatDate(): string {
+    const d = new Date();
+    let month = '' + (d.getMonth() + 1);
+    let day = '' + d.getDate();
+    const year = d.getFullYear();
+
+    if (month.length < 2) {
+      month = '0' + month;
+    }
+    if (day.length < 2) {
+      day = '0' + day;
+    }
+    return [year, month, day].join('-');
   }
 
   private generateList(results: object[]) {
@@ -128,7 +128,7 @@ export class FilmsService {
 
   private getGenres() {
     const url = `${this.urlMovieDb}/genre/movie/list?api_key=${this.apikey}${this.languageEs}`;
-    return this.httpClient.jsonp(url, 'callback').subscribe(
+    return this.httpClient.get(url).subscribe(
       (resp: any) => {
         this.initializeGenres(resp.genres);
       }
@@ -150,8 +150,7 @@ export class FilmsService {
   }
 
   test() {
-    // return this.httpClient.get(`https://api.themoviedb.org/3/movie/550?api_key=${ this.apikey }${ this.languageEs }`);
-    return this.httpClient.jsonp('https://api.themoviedb.org/3/movie/550?api_key=4657431159112caae0426c3da4079c54', 'callback').pipe(
+    return this.httpClient.get(`https://api.themoviedb.org/3/movie/550?api_key=${ this.apikey }${ this.languageEs }`).pipe(
       map(resp => resp)
     );
   }

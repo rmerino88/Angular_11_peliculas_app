@@ -1,21 +1,23 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FilmsService } from 'src/app/services/films.service';
 import { FilmShortInfoModel } from 'src/app/models/film.short.info.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html'
 })
 export class SearchComponent implements OnInit {
+
   results: FilmShortInfoModel[] = [];
   sugerencias: string[] = [];
-  term = '';
+  term: string;
 
   KEY_PARAMS = 'termToSearch';
   // @Input() termToSearchFromNavbar: number;
 
   constructor(private filmsService: FilmsService,
+              private router: Router,
               private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
@@ -39,9 +41,9 @@ export class SearchComponent implements OnInit {
   }
 
   buscar(term?: string) {
+    // this.router.navigate(['search', this.term]);
     let termToSearch = this.term;
     this.sugerencias = [];
-    // this.term = '';
     if (term) {
       termToSearch = term;
     }

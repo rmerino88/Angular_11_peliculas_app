@@ -10,6 +10,7 @@ const routes: Routes = [
   { path: 'search', component: SearchComponent },
   { path: 'search/:termToSearch', component: SearchComponent },
   { path: 'detail/:id', component: DetailComponent },
+  { path: 'detail/:id/:termToSearch', component: DetailComponent },
   // { path: ':idFilm', component: DetailComponent },
   { path: '**', pathMatch: 'full', redirectTo: 'home' }
 ];

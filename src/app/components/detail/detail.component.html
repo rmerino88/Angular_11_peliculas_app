@@ -8,7 +8,7 @@
             <h3>Sinopsis</h3>
             <hr>
             <p>{{film.overview}}</p>
-            <p>"{{film.tagline}}"</p>
+            <p *ngIf="film.tagline">"{{film.tagline}}"</p>
             <p>Puesto: <span class="badge badge-primary">{{ film.popularity }}</span></p>
             <p>Voto promedio: <span class="badge badge-primary">{{ film.vote_average }}</span></p>
         </div>

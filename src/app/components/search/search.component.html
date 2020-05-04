@@ -20,7 +20,7 @@
         <div class="card-body">
             <h5 class="card-title">{{result.title}}</h5>
             <p class="card-text">{{result.overview}}</p>
-            <a [routerLink]="[ '/detail', result.id ]" class="btn btn-primary">Ver detalle</a>
+            <a [routerLink]="[ '/detail', result.id, term ]" class="btn btn-primary">Ver detalle</a>
         </div>
     </div>
 </div>
