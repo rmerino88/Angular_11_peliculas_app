@@ -14,7 +14,7 @@ export class DetailComponent implements OnInit {
   pageBack = '';
 
   private KEY_ID = 'id';
-  private KEY_ID_FILM = 'idFilm';
+  // private KEY_ID_FILM = 'idFilm';
   private KEY_TERM_TO_SEARCH = 'termToSearch';
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -24,13 +24,13 @@ export class DetailComponent implements OnInit {
 
     this.activatedRoute.params.subscribe(
       params => {
-        let idValue = params[this.KEY_ID];
+        const idValue = params[this.KEY_ID];
         if (params[this.KEY_TERM_TO_SEARCH]) {
           this.pageBack = params[this.KEY_TERM_TO_SEARCH];
         }
-        if (!idValue) {
-          idValue = params[this.KEY_ID_FILM];
-        }
+        // if (!idValue) {
+        //   idValue = params[this.KEY_ID_FILM];
+        // }
         if (!idValue) {
           this.notFound = true;
           return;
