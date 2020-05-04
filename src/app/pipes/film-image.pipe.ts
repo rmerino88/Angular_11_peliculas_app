@@ -9,8 +9,10 @@ export class FilmImagePipe implements PipeTransform {
   transform(film: any, ...args: string[]): any {
     let route = '';
 
-    if (film.image) {
+    if (film && film.image) {
       route = this.routeAndWeight500 + film.image;
+    } else if (film && film.backdrop_path) {
+      route = this.routeAndWeight500 + film.backdrop_path;
     } else {
       route = 'assets/img/no-available.jpg';
     }
@@ -18,7 +20,7 @@ export class FilmImagePipe implements PipeTransform {
     if (args[0] && args[0] === 'backgorund') {
       return 'url( ' + route + ' )';
     }
-
+    return route;
 
   }
 }

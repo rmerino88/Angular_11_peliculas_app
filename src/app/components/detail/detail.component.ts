@@ -8,9 +8,9 @@ import { Location } from '@angular/common';
   templateUrl: './detail.component.html'
 })
 export class DetailComponent implements OnInit {
-  private notFound = false;
-  private loading = true;
-  private film: any;
+  notFound = false;
+  loading = true;
+  film: any;
 
   private KEY_ID = 'id';
   private KEY_ID_FILM = 'idFilm';
@@ -28,7 +28,6 @@ export class DetailComponent implements OnInit {
           this.notFound = true;
           return;
         }
-        console.log(params[this.KEY_ID]);
         this.filmsService.getDetailFilm(idValue).subscribe(
           resp => {
             if (!resp) {

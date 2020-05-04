@@ -1,2 +1,17 @@
-<p *ngIf="!loading">{{film.original_title}}</p>
-<button type="button" class="btn btn-primary" (click)="back()">Volver</button>
+<div *ngIf="!loading && !notFound" class="container main-container animated fadeIn fasr">
+    <h1>{{film.original_title}}</h1>
+    <div class="row">
+        <div class="col-md-5">
+            <img [src]="film | filmImage" [alt]="film.original_title" class="img-thumbnail img-fluid">
+        </div>
+        <div class="col-md-7">
+            <h3>Sinopsis</h3>
+            <hr>
+            <p>{{film.overview}}</p>
+            <p>"{{film.tagline}}"</p>
+            <p>Puesto: <span class="badge badge-primary">{{ film.popularity }}</span></p>
+            <p>Voto promedio: <span class="badge badge-primary">{{ film.vote_average }}</span></p>
+        </div>
+    </div>
+    <button type="button" class="btn btn-primary" (click)="back()"><< Volver</button>
+</div>
